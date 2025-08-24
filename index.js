@@ -12,7 +12,7 @@ const client = new Client({
 // Configuration data
 const ROLE_ID = '1408904851622203432';
 const VERIFICATION_CHANNEL_ID = '1408903255618228375';
-const BOT_TOKEN = 'MTQwNTY1NTUzMjIyMzcyNTU4OA.G9XnoB.Tc7ba_E5fqxRrBVgPfI5p2D6OPlRv15ZaIiAV4';
+const BOT_TOKEN = 'MTQwNTY1NTUzMjIyMzcyNTU4OA.GZc-bp.EyTFHVxcfh1znPHZwjHyswbbwNigKwWHWGQU9s';
 const OWNER_ID = '1392294451723894854'; // Replace with your Discord user ID
 
 // Store math problems for users
@@ -301,4 +301,5 @@ process.on('unhandledRejection', (error) => {
 });
 
 // Login bot
+
 client.login(BOT_TOKEN);
