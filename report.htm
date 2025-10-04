@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Hub</title>
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <style>
+        * {
+            font-family: "VCR OSD Mono", sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .wallpaper {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url(https://files.catbox.moe/ztoa4s.gif);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        pre {
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            border: none;
+            font-size: 10px;
+        }
+
+        .center-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 50px;
+            position: relative;
+        }
+
+        .form-container {
+            width: 500px;
+            max-width: 90%;
+            background: transparent;
+            border: 2px solid #2c2c2c;
+            border-radius: 5px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #dddddd;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #2c2c2c;
+            border-radius: 3px;
+            color: white;
+            font-family: inherit;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #666666;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: inputGlow 1s ease-in-out;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        @keyframes inputGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        }
+
+        .error {
+            animation: shake 0.5s ease-in-out;
+            border-color: #ff0000;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .submit-btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 30px;
+            border: 2px solid #2c2c2c;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 1.0rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            opacity: 50%;
+            margin-top: 20px;
+        }
+
+        .submit-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            opacity: 50%;
+            left: 0;
+            width: 150%;
+            height: 100%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .submit-btn:hover::after {
+            transform: scale(4);
+        }
+
+        .submit-btn:hover {
+            border-color: #666666;
+            background: #292929;
+            opacity: 100%;
+        }
+
+        .submit-btn:disabled {
+            opacity: 30%;
+            cursor: not-allowed;
+        }
+
+        .text {
+            margin-top: 30px;
+            text-decoration: none;
+            color: #dddddd;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .click {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 300px;
+        }
+
+        .notification {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #2c2c2c;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+
+        .notification.error {
+            border-color: #ff0000;
+            color: #ff0000;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .notification h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            
+            .form-container {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            pre {
+                font-size: 8px;
+            }
+            
+            .text {
+                font-size: 10px;
+                padding: 0 20px;
+            }
+
+            .submit-btn {
+                font-size: 0.9em;
+            }
+
+            .notification-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body class="wallpaper">
+
+    <div class="click">
+        <h1>Enter Report Zone</h1>
+    </div>
+
+
+    <div class="notification-container" id="notificationContainer"></div>
+
+
+    <div class="center-screen entered" style="display: none;">
+        <pre>
+                  _  __    _                 _             
+                 | |/ _|  | |               (_)            
+         ___  ___| | |_ __| | _____  ____  ___ _ __   __ _ 
+        / __|/ _ \ |  _/ _` |/ _ \ \/ /\ \/ / | '_ \ / _` |
+--      \__ \  __/ | || (_| | (_) >  <  >  <| | | | | (_| |      --
+        |___/\___|_|_| \__,_|\___/_/\_\/_/\_\_|_| |_|\__, |
+                                                      __/ |
+                                                     |___/ 
+        </pre>
+        
+        <div class="form-container">
+            <h2 style="margin-bottom: 20px; color: #dddddd;">Report Incident</h2>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="discordId">Discord ID (of reported user):</label>
+                    <input type="text" id="discordId" name="discordId" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Type (who they are):</label>
+                    <select id="type" name="type" required>
+                        <option value="">Select...</option>
+                        <option value="doxxer">Doxxer</option>
+                        <option value="pedophile">Pedophile</option>
+                        <option value="extorter">Extorter</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">What they did (to you or others):</label>
+                    <textarea id="description" name="description" placeholder="Describe the incident in detail..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="evidence">Link to evidence photos:</label>
+                    <input type="url" id="evidence" name="evidence" placeholder="https://example.com/evidence.jpg" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Your contact (Discord ID & Username):</label>
+                    <input type="text" id="contact" name="contact" placeholder="e.g., 123456789#username" required>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">Send Report</button>
+            </form>
+        </div>
+
+        <div class="text">
+            Reports are anonymous and reviewed. Provide clear evidence. Stay safe.
+        </div>
+    </div>
+
+    <audio loop="">
+        <source src="https://files.catbox.moe/7jbanw.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const clickDiv = document.querySelector('.click');
+        const audio = document.querySelector('audio');
+        const form = document.getElementById('reportForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const centerScreen = document.querySelector('.center-screen');
+        const notificationContainer = document.getElementById('notificationContainer');
+
+
+        const encodedWebhook = 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQyNDAyNDYyNzAxMjgyOTIxNC85Q3plS2dndEwtU2Jab0hDRjJJYlRKb081Q2FMV19XMENRTlVYcjBHUlF4cHRSMXZWMjJyZzZHZTVHbEp0TjZudg==';
+        const webhookUrl = atob(encodedWebhook);
+
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<h4>${type.toUpperCase()}</h4><p>${message}</p>`;
+            
+            notificationContainer.appendChild(notification);
+            
+
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+
+        clickDiv.addEventListener('click', () => {
+            audio.volume = 0.5;
+            audio.play();
+            clickDiv.classList.add('fade-out');
+            clickDiv.addEventListener('animationend', () => {
+                clickDiv.style.display = 'none';
+                centerScreen.style.display = 'flex';
+                showNotification('Access granted. Proceed with caution.', 'success');
+            });
+        });
+
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+
+            const fields = form.querySelectorAll('input, select, textarea');
+            let isValid = true;
+            fields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    isValid = false;
+                    setTimeout(() => field.classList.remove('error'), 500);
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('All fields must be filled. Double-check and try again.', 'error');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            showNotification('Transmitting report... Stand by.', 'info');
+            
+            const formData = {
+                discordId: document.getElementById('discordId').value,
+                type: document.getElementById('type').value,
+                description: document.getElementById('description').value,
+                evidence: document.getElementById('evidence').value,
+                contact: document.getElementById('contact').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: 'New Report Received',
+                            color: 0xFF0000,
+                            fields: [
+                                { name: 'Discord ID', value: formData.discordId, inline: true },
+                                { name: 'Type', value: formData.type, inline: true },
+                                { name: 'Description', value: formData.description, inline: false },
+                                { name: 'Evidence Link', value: `[View Evidence](${formData.evidence})`, inline: false },
+                                { name: 'Reporter Contact', value: formData.contact, inline: true },
+                                { name: 'Timestamp', value: formData.timestamp, inline: true }
+                            ],
+                            footer: { text: 'Selfdox.cc Report - Verified Submission' }
+                        }]
+                    })
+                });
+                
+                if (response.ok) {
+                    showNotification('Report transmitted successfully. Vigilance noted.', 'success');
+                    form.reset();
+                } else {
+                    throw new Error('Transmission failed');
+                }
+            } catch (error) {
+                showNotification('Transmission error. Verify link and retry.', 'error');
+                console.error('Webhook error:', error); 
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Report';
+            }
+        });
+    </script>
+</body>
+</html>
