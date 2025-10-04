@@ -23,7 +23,7 @@
 
         .wallpaper {
             background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
-                url(https://files.catbox.moe/ztoa4s.gif);
+                ur[](https://files.catbox.moe/ztoa4s.gif);
             background-size: cover;
             background-position: center;
             min-height: 100vh;
@@ -44,7 +44,6 @@
             align-items: center;
             min-height: 100vh;
             padding-bottom: 50px;
-            position: relative;
         }
 
         .form-container {
@@ -81,6 +80,7 @@
             font-family: inherit;
             font-size: 12px;
             transition: all 0.3s ease;
+            required: true;
         }
 
         .form-group input:focus,
@@ -198,49 +198,6 @@
             100% { opacity: 0; }
         }
 
-
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            max-width: 300px;
-        }
-
-        .notification {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #2c2c2c;
-            border-radius: 3px;
-            padding: 12px;
-            margin-bottom: 10px;
-            font-size: 12px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-color: #00ff00;
-            color: #00ff00;
-        }
-
-        .notification.error {
-            border-color: #ff0000;
-            color: #ff0000;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        .notification h4 {
-            margin: 0 0 5px 0;
-            font-size: 14px;
-        }
-
         @media (max-width: 600px) {
             html, body {
                 overflow-x: hidden;
@@ -263,26 +220,16 @@
             .submit-btn {
                 font-size: 0.9em;
             }
-
-            .notification-container {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
         }
     </style>
 </head>
 <body class="wallpaper">
-
+    <!-- Click to Enter Screen -->
     <div class="click">
         <h1>Enter Report Zone</h1>
     </div>
 
-
-    <div class="notification-container" id="notificationContainer"></div>
-
-
+    <!-- Main Content -->
     <div class="center-screen entered" style="display: none;">
         <pre>
                   _  __    _                 _             
@@ -347,47 +294,23 @@
         const form = document.getElementById('reportForm');
         const submitBtn = document.getElementById('submitBtn');
         const centerScreen = document.querySelector('.center-screen');
-        const notificationContainer = document.getElementById('notificationContainer');
 
-
-        const encodedWebhook = 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQyNDAyNDYyNzAxMjgyOTIxNC85Q3plS2dndEwtU2Jab0hDRjJJYlRKb081Q2FMV19XMENRTlVYcjBHUlF4cHRSMXZWMjJyZzZHZTVHbEp0TjZudg==';
-        const webhookUrl = atob(encodedWebhook);
-
-
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `<h4>${type.toUpperCase()}</h4><p>${message}</p>`;
-            
-            notificationContainer.appendChild(notification);
-            
-
-            setTimeout(() => notification.classList.add('show'), 10);
-            
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
-        }
-
-
+        // Click to enter
         clickDiv.addEventListener('click', () => {
-            audio.volume = 0.5;
+            audio.volume = 0.5; // Softer for focus
             audio.play();
             clickDiv.classList.add('fade-out');
             clickDiv.addEventListener('animationend', () => {
                 clickDiv.style.display = 'none';
                 centerScreen.style.display = 'flex';
-                showNotification('Access granted. Proceed with caution.', 'success');
             });
         });
 
-
+        // Form validation and submit
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-
+            // Check all fields
             const fields = form.querySelectorAll('input, select, textarea');
             let isValid = true;
             fields.forEach(field => {
@@ -401,13 +324,12 @@
             });
             
             if (!isValid) {
-                showNotification('All fields must be filled. Double-check and try again.', 'error');
+                alert('All fields must be filled. Double-check and try again.');
                 return;
             }
             
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
-            showNotification('Transmitting report... Stand by.', 'info');
             
             const formData = {
                 discordId: document.getElementById('discordId').value,
@@ -419,7 +341,7 @@
             };
             
             try {
-                const response = await fetch(webhookUrl, {
+                const response = await fetch('YOUR_WEBHOOK_URL', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -434,20 +356,19 @@
                                 { name: 'Reporter Contact', value: formData.contact, inline: true },
                                 { name: 'Timestamp', value: formData.timestamp, inline: true }
                             ],
-                            footer: { text: 'Selfdox.cc Report - Verified Submission' }
+                            footer: { text: 'Report Hub - Verified Submission' }
                         }]
                     })
                 });
                 
                 if (response.ok) {
-                    showNotification('Report transmitted successfully. Vigilance noted.', 'success');
+                    alert('Report sent successfully. Thank you for your vigilance.');
                     form.reset();
                 } else {
-                    throw new Error('Transmission failed');
+                    throw new Error('Send failed');
                 }
             } catch (error) {
-                showNotification('Transmission error. Verify link and retry.', 'error');
-                console.error('Webhook error:', error); 
+                alert('Error sending report. Check your connection and try again.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Report';
