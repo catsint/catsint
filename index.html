@@ -1,1 +1,309 @@
-maintenance
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>selfdox</title>
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <style>
+        * {
+            font-family: "VCR OSD Mono", sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .wallpaper {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url(https://files.catbox.moe/ztoa4s.gif);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        pre {
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            border: none;
+            font-size: 10px;
+        }
+
+        .center-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .box-brrr {
+            width: calc(47% - 10px);
+            border-radius: 2px;
+            background-color: transparent;
+            padding: 20px;
+            display: block;
+            box-sizing: border-box;
+            margin: 0 5px;
+        }
+
+        .box-contain {
+            display: flex;
+            margin-top: 1em;
+            width: 500px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .pfp {
+            width: 110px;
+            height: auto;
+            border-radius: 50%;
+            margin-left: 20px;
+        }
+
+        .text {
+            margin-top: 30px;
+            text-decoration: none;
+            color: #dddddd;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .click {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s;
+        }
+
+        .members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            justify-items: center;
+            margin-top: 40px;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .manager {
+            display: inline-block;
+            background-image: url('https://files.catbox.moe/p9n473.gif'); 
+            background-size: 100px 40px; 
+            background-repeat: repeat; 
+            background-position: 0 50%; 
+            padding: 8px 8px; 
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+        .admin {
+            display: inline-block;
+            background-image: url('https://files.catbox.moe/vqvalf.gif'); 
+            background-size: 100px 40px; 
+            background-repeat: repeat; 
+            background-position: 0 50%; 
+            padding: 8px 8px; 
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+        .rich {
+            display: inline-block;
+            background-image: url('https://files.catbox.moe/2qqmwy.gif'); 
+            background-size: 100px 40px; 
+            background-repeat: repeat; 
+            background-position: 0 50%; 
+            padding: 8px 8px; 
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+
+        .boton-elegante {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 20px;
+            border: 2px solid #2c2c2c;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 1.0rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            opacity: 50%;
+            margin: 10px;
+        }
+
+        .boton-elegante::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            opacity: 50%;
+            left: 0;
+            width: 150%;
+            height: 100%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .boton-elegante:hover::after {
+            transform: scale(4);
+        }
+
+        .boton-elegante:hover {
+            border-color: #666666;
+            background: #292929;
+        }
+
+        @media (max-width: 600px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            
+            .box-contain {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            .box-brrr {
+                width: 90%;
+                max-width: 400px;
+            }
+            
+            pre {
+                font-size: 8px;
+            }
+            
+            .text {
+                font-size: 10px;
+                padding: 0 20px;
+            }
+
+            .button {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body class="wallpaper">
+
+    <div class="click">
+        <h1>Gods Favorite</h1>
+    </div>
+
+
+    <div style="text-align:center; margin-top:20px;">
+        <a href="doxlist.htm" class="boton-elegante">Hall Of Autism</a>
+    </div>
+
+
+    <div class="center-screen entered">
+        <pre>
+                  _  __    _                 _             
+                 | |/ _|  | |               (_)            
+         ___  ___| | |_ __| | _____  ____  ___ _ __   __ _ 
+        / __|/ _ \ |  _/ _` |/ _ \ \/ /\ \/ / | '_ \ / _` |
+--      \__ \  __/ | || (_| | (_) >  <  >  <| | | | | (_| |      --
+        |___/\___|_|_| \__,_|\___/_/\_\/_/\_\_|_| |_|\__, |
+                                                      __/ |
+                                                     |___/ 
+        </pre>
+        <div class="intial-container">
+            <div class="box-contain">
+                <div class="box-brrr">
+                    <img src="https://files.catbox.moe/eugnjt.png" class="pfp" alt="Operator PFP">
+                    <h3>
+                        <span style="color: #ff0000;">• </span>
+                        <span class="admin">obsessor</span>
+                    </h3>
+                    <p>Founder</p>
+                    <p style="font-size:12px;">"if you know assembly, everything is open source"</p>
+                    <p style="font-size:10px;">--Socials--</p>
+                    <a href="https://doxbin.net/user/obsessor" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/vb282c.png" alt="Doxbin" height="30px"></a>
+                    <a href="https://t.me/FBIIGEGIGEJKHGJHGIUH3798QHJI" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/heyznb.png" height="30px" alt="Telegram"></a>
+                    <a href="https://discord.com/users/1411636475191099513" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/ktjqv7.png" height="30px" alt="Discord"></a>
+                </div>
+                <div class="box-brrr">
+                    <img src="https://files.catbox.moe/pbpyog.png" class="pfp" alt="Operator PFP">
+                    <h3>
+                        <span style="color: #bb71e4;">• </span>
+                        <span class="manager">exploit</span>
+                    </h3>
+                    <p>Manager</p>
+                    <p style="font-size:12px;">real nigga, femboy hunter, lqbtq hater, monkey, dog, cat, meow meow meow :3...</p>
+                    <p style="font-size:10px;">--Socials--</p>
+                    <a href="https://doxbin.net/user/babychiefdoit" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/vb282c.png" alt="Doxbin" height="30px"></a>
+                    <a href="https://t.me/messi_no_in_bio" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/heyznb.png" height="30px" alt="Telegram"></a>
+                    <a href="https://discord.com/users/1351070034214256681" target="_blank" rel="noopener noreferrer"><img src="https://files.catbox.moe/ktjqv7.png" height="30px" alt="Discord"></a>
+                </div>
+            </div>
+
+            <div class="text">
+                These are our only socials, beware of impersonators.
+                <br><br>
+                The current active domains are:<br>
+                <a href="https://selfdoxxing.eu/" target="_blank">selfdoxxing.eu</a> | <a href="https://selfdox.cc/" target="_blank">selfdox.cc</a>
+                <br><br>
+                <a href="https://catsint.fun/pgp.txt">PGP</a><br><br>
+                779A 68FM 024S 125E 571E 4754 1519 14C1 BA4F 06B7
+            </div>
+        </div>
+    </div>
+
+    <audio loop="">
+        <source src="https://files.catbox.moe/7jbanw.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const clickDiv = document.querySelector('.click');
+        const audio = document.querySelector('audio');
+
+
+        clickDiv.addEventListener('click', () => {
+            audio.volume = 1;
+            audio.play();
+            clickDiv.classList.add('fade-out');
+            clickDiv.addEventListener('animationend', () => {
+                clickDiv.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
