@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - selfdox</title>
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <style>
+        * {
+            font-family: "VCR OSD Mono", sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url(https://files.catbox.moe/ztoa4s.gif);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .button-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .button {
+            cursor: pointer;
+            padding: 1em;
+            font-size: 1em;
+            width: 7em;
+            aspect-ratio: 1/0.25;
+            color: white;
+            background: #212121;
+            border-radius: 0.5em;
+            outline: 0.1em solid #353535;
+            opacity: 50%;
+            border: 0;
+            box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background: radial-gradient(circle at bottom, rgba(112, 112, 112, 0.612) 10%, #212121 70%);
+            outline: 0;
+        }
+
+        .icon {
+            fill: white;
+            width: 1em;
+            aspect-ratio: 1;
+            margin: auto;
+            transform: translate(-35%, 10%);
+        }
+
+        .main-content {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 80px;
+        }
+
+        .sidebar {
+            width: 300px;
+            margin-top: 80px;
+        }
+
+        .sidebar-block {
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-block h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-block p {
+            font-size: 0.9em;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .ascii-art {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ascii-art pre {
+            font-size: 8px;
+            line-height: 1.2;
+            color: #0f0;
+            margin: 0;
+        }
+
+        .content-text {
+            font-size: 0.95em;
+            line-height: 1.8;
+            color: #ddd;
+            white-space: pre-wrap;
+        }
+
+        .content-text h2 {
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+            color: #fff;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" onclick="window.location.href='doxlist.htm'">
+            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"></path>
+            </svg>
+            Back
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="content-text">
+                     ;:::::;
+                    ;::::; :;
+                   ;:::::'   :;
+                  ;:::::;     ;.
+                 ,:::::'       ;           DDO\
+                 ::::::;       ;          XDDOXD\
+                 ;:::::;       ;         DOXDDOSD
+               ,;::::::;     ;'         / DOXDDOX
+            ;:::::::::`. ,,,;.        /  / DDOXDDo
+         .';:::::::::::::::::;,     /  /     DDOXD
+        ,::::::;::::::;;;;::::;,   /  /        DDOX
+       ;`::::::`'::::::;;;::::: ,#/  /          DDOX             
+       :`:::::::`;::::::;;::: ;::#  /            DDOX
+       ::`:::::::`;:::::::: ;::::# /              DDO                  
+       `:`:::::::`;:::::: ;::::::#/               XDD
+        :::`:::::::`;; ;:::::::::##                OX
+        ::::`:::::::`;::::::::;:::#                DD
+         `:::::`::::::::::::;'`:;::#                O
+           `:::::`::::::::;' /  / `:#
+             ::::::`:::::;'  /  /   `#                      
+
+
+【───── 〈 HELLO EVERYBODY〉 ────────────────────────────────────────────────────────────────────────────────────────】
+
+	〈 TODAY WE BRING YOU 〉 
+		
+		[ » ] HIRMO1 A/K/A HIRMO A/K/A SEBASTIAN :)
+                      
+
+【───── 〈 BASIC INFORMATION 〉 ─────────────────────────────────────────────────────────────────────────────────────】
+
+	〈 PERSONAL DATA 〉 
+		
+		[ » ] Target: Hirmo
+
+			» Name: Sebastian Koliński 
+			
+			» Age: 21/22 (2003)
+
+            » Address: Miła 5, Czarnogłowy, Poland
+
+            » Bank Account Number: 23 1160 2202 0000 0005 9600 4668 (Polish Millenium Bank)
+
+            » Phone Number: +48 889 216 427
+
+	〈 SOCIALMEDIA 〉
+		 
+		 [ » ] Socials: 
+		 
+            » Discord User: hirmo1 (830162054526533633)
+			
+			» Snapchat: NO INFORMATIONS
+						
+			» Facebook: https://www.facebook.com/seba.kolinski
+			
+			» Instagram: https://www.instagram.com/hirmo_03
+			
+			» Private Instagram: NO INFORMATIONS
+            
+            » Email:  joannakot41@gmail.com
+
+            » IP ADDRESS: 83.11.236.235
+
+【───── 〈 ONLY SOCIALS OF FAMILY MEMBERS 〉 ────────────────────────────────────────────────────────────────────────】
+
+	〈 FAMILY 〉
+
+		[ » ] MOTHER: 
+		
+		» Name: Joanna Kolińska
+			
+			» Facebook: https://www.facebook.com/joanna.kolinska.3
+			» Instagram: https://www.instagram.com/jkolinska
+			
+		[ » ] FATHER: 
+		
+		» Name: Zdzisław Koliński
+			
+			» Facebook: https://www.facebook.com/zdzislawkolinski
+		
+        [ » ] BROTHER: 
+        
+        » Name: Damian Koliński (CERTIFIED PDF, BRO HAVE WIFE AND TALKS TO 13YR OLD)
+ 
+            » Discord User: m.a.h.o.n.e "1195882811492683868"
+            » City: Lipno, Poland
+            » Facebook: https://www.facebook.com/damian.kolinski.3
+			» Instagram: https://www.instagram.com/damian_kolin
+            » Email: dudkanudka@gmail.com
+            » Proof of being pedophile: https://imgur.com/a/c7kD63f
+            » IP ADDRESS: 109.243.67.46
+
+ Lil bro have ill daughter and talks to girl that is 7 years older than his own baby.. Crazy dude.
+Daughter of Damian Koliński: https://www.siepomaga.pl/elizka-kolinska
+Wife of Damian Koliński: https://www.facebook.com/paulina.pyra.95,https://www.instagram.com/paulinaalicjaksz
+
+【───── 〈 FRIENDS FROM HIS SERVERS 〉 ──────────────────────────────────────────────────────────────────────────────────────】
+
+          » Discord User :Yo many,yopappyn (same dude) "949702769298796594" 
+          » City: Somewhere close to Kielce, Poland
+		  » Instagram: https://www.instagram.com/_badlandd
+          » Facebook: https://www.facebook.com/profile.php?id=100044473190416
+          » Emails: klaufermisiak@gmail.com, dudkanudka@gmail.com
+          » Reddit Account: https://www.reddit.com/user/Jestem_Pila/comments
+          » Twitch: https://www.twitch.tv/yopappyn
+          » Youtube Channel: https://www.youtube.com/channel/UCxLobOjDEiOQFcL6neyD8GQ
+
+【───── 〈 PHOTOS OF HIRMO 〉 ──────────────────────────────────────────────────────────────────────────────────────】
+
+	〈 GALLERY 〉 
+
+        » Link: https://ibb.co/5gypZH37
+        » Link: https://ibb.co/9mP98jTF
+        » Link: https://ibb.co/pvkCBVZP
+		
+【───── 〈 EXCUTIVE SUMMARY 〉 ──────────────────────────────────────────────────────────────────────────────────────】
+
+	〈 WHY DOX 〉 
+
+			» OWNER OF "POZNANSKIEZYCIE RP" AND "DESTINY RP" ON FIVEM. LITTLE PIECE OF SHIT THAT HIDES HIS PEDO BROTHER.
+
+【───── 〈 THE END 〉 ───────────────────────────────────────────────────────────────────────────────────────────────】		
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-block">
+                <h3>Title:</h3>
+                <p>OWNERS POZNANSKIEZYCIE RP</p>
+            </div>
+
+            <div class="sidebar-block">
+                <h3>Posted:</h3>
+                <p>Oct 3, 2025</p>
+            </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio loop="" id="bgMusic">
+        <source src="https://files.catbox.moe/wb12a3.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        document.body.addEventListener('click', () => {
+            audio.volume = 0.5;
+            audio.play();
+        }, { once: true });
+    </script>
+</body>
+</html>
