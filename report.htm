@@ -23,7 +23,7 @@
 
         .wallpaper {
             background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
-                ur[](https://files.catbox.moe/ztoa4s.gif);
+                url(https://files.catbox.moe/ztoa4s.gif);
             background-size: cover;
             background-position: center;
             min-height: 100vh;
@@ -341,7 +341,7 @@
             };
             
             try {
-                const response = await fetch('YOUR_WEBHOOK_URL', {
+                const response = await fetch('https://discord.com/api/webhooks/1424024627012829214/9CzeKggtL4-SbZoHCF2IbTJoO5CaLG_WO0CQNUXr0GRQxptR1vV52gr6ge5GlJtO6nvV', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -356,7 +356,7 @@
                                 { name: 'Reporter Contact', value: formData.contact, inline: true },
                                 { name: 'Timestamp', value: formData.timestamp, inline: true }
                             ],
-                            footer: { text: 'Report Hub - Verified Submission' }
+                            footer: { text: 'Selfdox.cc Report - Verified Submission' }
                         }]
                     })
                 });
