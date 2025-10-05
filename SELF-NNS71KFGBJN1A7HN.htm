@@ -368,9 +368,17 @@
         pinSubmit.addEventListener('click', async () => {
             try {
                 const response = await fetch('/pin.txt');
-                if (!response.ok) throw new Error('Failed to load pin.txt');
-                const correctPin = await response.text().trim();
-                if (pinInput.value.trim() === correctPin) {
+                if (!response.ok) {
+                    throw new Error(`Failed to load pin.txt: ${response.status} ${response.statusText}`);
+                }
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('text/plain')) {
+                    throw new Error('pin.txt is not a plain text file');
+                }
+                const correctPin = await response.text();
+                const trimmedPin = typeof correctPin === 'string' ? correctPin.trim() : '';
+                console.log('Fetched PIN:', trimmedPin); // Debug log
+                if (pinInput.value.trim() === trimmedPin) {
                     pinOverlay.style.display = 'none';
                     dashboard.style.display = 'block';
                 } else {
@@ -380,9 +388,9 @@
                     setTimeout(() => pinInput.classList.remove('error'), 500);
                 }
             } catch (error) {
-                pinError.textContent = 'Error loading PIN file. Check deployment.';
+                console.error('PIN fetch error:', error);
+                pinError.textContent = `Error: ${error.message}. Check pin.txt deployment.`;
                 pinError.style.display = 'block';
-                console.error(error);
             }
         });
 
