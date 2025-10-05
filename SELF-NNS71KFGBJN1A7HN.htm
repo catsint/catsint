@@ -11,14 +11,13 @@
             100% { background-position: 200% 0; }
         }
 
-        @keyframes neon-glow {
-            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
-            50% { box-shadow: 0 0 15px rgba(168, 168, 168, 0.5); }
-            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .shine-text {
-            background: linear-gradient(100deg, #ffffff 45%, #c4c0c0 50%, #ffffff 55%);
+            background: linear-gradient(100deg, #3b82f6 45%, #6b7280 50%, #3b82f6 55%);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
@@ -27,8 +26,8 @@
         }
 
         body {
-            background: black;
-            color: white;
+            background: #000000;
+            color: #e5e7eb;
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -40,21 +39,29 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
         }
 
-        .pin-container {
+        .card {
             width: 400px;
             max-width: 90%;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #2c2c2c;
+            background: #000000;
+            border: 1px solid #2d3748;
             border-radius: 12px;
             padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             text-align: center;
+            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
         }
 
         .formContainer {
@@ -64,131 +71,128 @@
             align-items: center;
             justify-content: center;
             flex-direction: column-reverse;
-            gap: 10px;
+            gap: 8px;
             position: relative;
+            margin-bottom: 16px;
         }
 
         .formContainer > label {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-weight: 900;
-            font-size: 15px;
-            color: rgb(99, 99, 99);
+            font-weight: 600;
+            font-size: 14px;
+            color: #9ca3af;
             text-align: start;
             align-self: flex-start;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .formContainer > input,
         .formContainer > textarea {
             width: 100%;
             height: 40px;
-            border-radius: 10px;
-            background-color: transparent;
-            color: rgb(99, 99, 99);
-            border: 2px solid rgb(85, 85, 85);
-            font-size: 15px;
+            border-radius: 8px;
+            background-color: #000000;
+            color: #e5e7eb;
+            border: 1px solid #2d3748;
+            font-size: 14px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-weight: 700;
-            padding-left: 10px;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 8px 12px;
+            transition: all 0.2s ease;
             z-index: 5;
         }
 
         .formContainer > textarea {
-            height: 100px;
+            height: 80px;
             resize: vertical;
-            padding: 10px;
         }
 
         .formContainer > input:focus,
         .formContainer > textarea:focus {
-            color: rgb(197, 197, 197);
+            color: #e5e7eb;
             outline: none;
-            border: 2px solid rgb(255, 255, 255);
-            box-shadow:
-                0px 0px 10px rgba(255, 255, 255, 0.145),
-                0px 0px 5px rgba(255, 255, 255, 0.145) inset;
-            animation: neon-glow 1s ease-in-out infinite;
+            border: 1px solid #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
         .formContainer > input:focus + label,
         .formContainer > textarea:focus + label {
-            color: rgb(197, 197, 197);
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.145);
+            color: #3b82f6;
         }
 
         .formContainer > input::placeholder,
         .formContainer > textarea::placeholder {
-            color: rgb(85, 85, 85);
-            transition: all 0.5s ease;
+            color: #6b7280;
+            transition: all 0.2s ease;
         }
 
         .formContainer > input:focus::placeholder,
         .formContainer > textarea:focus::placeholder {
-            color: rgb(150, 150, 150);
+            color: #9ca3af;
         }
 
         .pin-error {
-            color: #ff3333;
+            color: #ef4444;
             font-size: 12px;
-            margin-top: 12px;
+            margin-top: 8px;
             animation: shake 0.5s ease-in-out;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
         .button {
             cursor: pointer;
-            font-size: 1.4rem;
-            border-radius: 16px;
+            font-size: 1rem;
+            border-radius: 12px;
             border: none;
             padding: 2px;
-            background: radial-gradient(circle 80px at 80% -10%, #ffffff, #181b1b);
+            background: radial-gradient(circle 60px at 80% -10%, #2d3748, #000000);
             position: relative;
-            margin: 8px;
+            margin: 6px;
             display: inline-flex;
             align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .button::after {
             content: "";
             position: absolute;
-            width: 65%;
-            height: 60%;
-            border-radius: 120px;
+            width: 60%;
+            height: 50%;
+            border-radius: 80px;
             top: 0;
             right: 0;
-            box-shadow: 0 0 20px #ffffff38;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
             z-index: -1;
         }
 
         .blob1 {
             position: absolute;
-            width: 70px;
+            width: 50px;
             height: 100%;
-            border-radius: 16px;
+            border-radius: 12px;
             bottom: 0;
             left: 0;
             background: radial-gradient(
-                circle 60px at 0% 100%,
-                #3fe9ff,
-                #0000ff80,
+                circle 40px at 0% 100%,
+                #3b82f6,
+                #3b82f680,
                 transparent
             );
-            box-shadow: -10px 10px 30px #0051ff2d;
+            box-shadow: -6px 6px 15px rgba(59, 130, 246, 0.2);
         }
 
         .inner {
-            padding: 14px 25px;
-            border-radius: 14px;
-            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #ffffff;
             z-index: 3;
             position: relative;
-            background: radial-gradient(circle 80px at 80% -50%, #777777, #0f1111);
+            background: radial-gradient(circle 60px at 80% -50%, #2d3748, #000000);
         }
 
         .inner::before {
@@ -197,11 +201,11 @@
             height: 100%;
             left: 0;
             top: 0;
-            border-radius: 14px;
+            border-radius: 10px;
             background: radial-gradient(
-                circle 60px at 0% 100%,
-                #00e1ff1a,
-                #0000ff11,
+                circle 40px at 0% 100%,
+                #3b82f61a,
+                #3b82f611,
                 transparent
             );
             position: absolute;
@@ -214,33 +218,39 @@
 
         .button:disabled .blob1 {
             background: radial-gradient(
-                circle 60px at 0% 100%,
-                #555555,
-                #33333380,
+                circle 40px at 0% 100%,
+                #2d3748,
+                #2d374880,
                 transparent
             );
         }
 
+        .button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
         .text-sm {
             font-size: 0.875rem;
-            color: #ffffff99;
+            color: #9ca3af;
         }
 
         pre {
             font-size: 10px;
             margin: 16px 0;
             white-space: pre-wrap;
+            color: #3b82f6;
         }
 
         .spinner {
             display: none;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #3fe9ff;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #3b82f6;
             border-top: 2px solid transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 8px;
+            margin-right: 6px;
         }
 
         .button.loading .spinner {
@@ -256,27 +266,39 @@
             100% { transform: rotate(360deg); }
         }
 
+        .pattern-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none"><path stroke="#2d3748" stroke-opacity="0.3" stroke-width="0.5" d="M0 0h40v40h-40zM0 40h40M40 0v40"/></svg>') repeat;
+            z-index: -1;
+        }
+
         @media (max-width: 640px) {
             pre {
                 font-size: 8px;
             }
-            .pin-container, .form-container {
+            .card {
                 padding: 16px;
                 width: 90%;
             }
             .formContainer {
                 max-width: 100%;
             }
+            .button {
+                margin: 4px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#0d0d0d_1px,transparent_1px)] [background-size:16px_16px]"></div>
-    <div class="absolute top-0 z-[-2] h-screen w-full bg-[radial-gradient(ellipse_60%_60%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
+    <div class="pattern-bg"></div>
 
     <div class="pin-overlay" id="pinOverlay">
-        <div class="pin-container">
-            <h2 class="text-lg font-bold mb-4">Enter PIN</h2>
+        <div class="card">
+            <h2 class="text-lg font-semibold text-gray-100 mb-4">Enter PIN</h2>
             <div class="formContainer">
                 <input type="password" id="pinInput" placeholder="Enter PIN from pin.txt">
                 <label for="pinInput">PIN</label>
@@ -293,7 +315,7 @@
     </div>
 
     <div class="flex h-screen items-center justify-center" id="dashboard" style="display: none;">
-        <div class="w-full max-w-2xl text-center form-container">
+        <div class="w-full max-w-2xl text-center">
             <h1 class="text-sm font-bold mb-4">
                 <pre class="shine-text">
 $$$$$$$\                      $$\       $$\                                    $$\     
@@ -306,56 +328,58 @@ $$$$$$$  |\$$$$$$  |$$  /\$$\ $$$$$$$  |$$ |$$ |  $$ |$$\ $$ |  $$ |\$$$$$$$\  \
 \_______/  \______/ \__/  \__|\_______/ \__|\__|  \__|\__|\__|  \__| \_______|  \____/ 
                 </pre>
             </h1>
-            <h2 class="text-lg font-bold mb-4">Webhook Multitool</h2>
-            <form id="webhookForm">
-                <div class="formContainer">
-                    <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
-                    <label for="webhookUrl">Webhook URL</label>
-                </div>
-                <div class="formContainer">
-                    <textarea id="message" placeholder="Enter message or bot command" required></textarea>
-                    <label for="message">Message/Command</label>
-                </div>
-                <div class="formContainer">
-                    <input type="number" id="repeatCount" min="1" max="10" value="1">
-                    <label for="repeatCount">Repeat Count (max 10)</label>
-                </div>
-                <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="button" id="spamBtn">
-                        <div class="blob1"></div>
-                        <div class="inner">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 4H14M2 4L5 7M2 4L5 1M10 7H14M10 7L13 4M10 7L13 10M2 12H14M2 12L5 9M2 12L5 15" stroke="#ffffff"></path>
-                            </svg>
-                            <span>Spam Webhook</span>
-                            <div class="spinner"></div>
-                        </div>
-                    </button>
-                    <button type="button" class="button" id="deleteBtn">
-                        <div class="blob1"></div>
-                        <div class="inner">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 4H14M4 4V14C4 14.5523 4.44772 15 5 15H11C11.5523 15 12 14.5523 12 14V4M6 4V2C6 1.44772 6.44772 1 7 1H9C9.55228 1 10 1.44772 10 2V4M6 7V12M10 7V12" stroke="#ffffff"></path>
-                            </svg>
-                            <span>Delete Webhook</span>
-                            <div class="spinner"></div>
-                        </div>
-                    </button>
-                    <button type="button" class="button" id="testBtn">
-                        <div class="blob1"></div>
-                        <div class="inner">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8M8 3V8L11 10" stroke="#ffffff"></path>
-                            </svg>
-                            <span>Test Webhook</span>
-                            <div class="spinner"></div>
-                        </div>
-                    </button>
-                </div>
-            </form>
-            <p class="text-sm mt-6">
-                <strong>Warning:</strong> This is a client-side tool. Webhook URLs are processed in the browser and may be exposed. Use temporary webhooks and deploy securely. Ensure pin.txt is in the public directory.
-            </p>
+            <div class="card">
+                <h2 class="text-lg font-semibold text-gray-100 mb-4">Webhook Multitool</h2>
+                <form id="webhookForm">
+                    <div class="formContainer">
+                        <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                        <label for="webhookUrl">Webhook URL</label>
+                    </div>
+                    <div class="formContainer">
+                        <textarea id="message" placeholder="Enter message or bot command" required></textarea>
+                        <label for="message">Message/Command</label>
+                    </div>
+                    <div class="formContainer">
+                        <input type="number" id="repeatCount" min="1" max="10" value="1">
+                        <label for="repeatCount">Repeat Count (max 10)</label>
+                    </div>
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+                        <button type="button" class="button" id="spamBtn">
+                            <div class="blob1"></div>
+                            <div class="inner">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 4H14M2 4L5 7M2 4L5 1M10 7H14M10 7L13 4M10 7L13 10M2 12H14M2 12L5 9M2 12L5 15" stroke="#ffffff"></path>
+                                </svg>
+                                <span>Spam Webhook</span>
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        <button type="button" class="button" id="deleteBtn">
+                            <div class="blob1"></div>
+                            <div class="inner">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 4H14M4 4V14C4 14.5523 4.44772 15 5 15H11C11.5523 15 12 14.5523 12 14V4M6 4V2C6 1.44772 6.44772 1 7 1H9C9.55228 1 10 1.44772 10 2V4M6 7V12M10 7V12" stroke="#ffffff"></path>
+                                </svg>
+                                <span>Delete Webhook</span>
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        <button type="button" class="button" id="testBtn">
+                            <div class="blob1"></div>
+                            <div class="inner">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8M8 3V8L11 10" stroke="#ffffff"></path>
+                                </svg>
+                                <span>Test Webhook</span>
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+                <p class="text-sm mt-6">
+                    <strong>Warning:</strong> This is a client-side tool. Webhook URLs are processed in the browser and may be exposed. Use temporary webhooks and deploy securely. Ensure pin.txt is in the public directory.
+                </p>
+            </div>
         </div>
     </div>
 
@@ -368,15 +392,15 @@ $$$$$$$  |\$$$$$$  |$$  /\$$\ $$$$$$$  |$$ |$$ |  $$ |$$\ $$ |  $$ |\$$$$$$$\  \
                 duration: 4000,
                 gravity: 'top',
                 position: 'right',
-                backgroundColor: type === 'success' ? '#00cc00' : type === 'error' ? '#ff3333' : '#2c2c2c',
+                backgroundColor: type === 'success' ? '#3b82f6' : type === 'error' ? '#ef4444' : '#2d3748',
                 className: 'toastify-notification',
                 style: {
-                    border: `1px solid ${type === 'success' ? '#00cc00' : type === 'error' ? '#ff3333' : '#2c2c2c'}`,
+                    border: `1px solid ${type === 'success' ? '#3b82f6' : type === 'error' ? '#ef4444' : '#2d3748'}`,
                     borderRadius: '4px',
                     padding: '12px',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
                     fontSize: '12px',
-                    boxShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
                     color: '#ffffff'
                 }
             }).showToast();
