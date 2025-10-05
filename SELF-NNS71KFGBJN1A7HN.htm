@@ -2,50 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webhook Multitool</title>
-    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        * {
-            font-family: "VCR OSD Mono", sans-serif;
-            color: white;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @keyframes shine {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes neon-glow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(63, 233, 255, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+        }
+
+        .shine-text {
+            background: linear-gradient(100deg, #ffffff 45%, #c4c0c0 50%, #ffffff 55%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 4s linear infinite;
         }
 
         body {
+            background: black;
+            color: white;
             margin: 0;
             padding: 0;
-            height: 100%;
-        }
-
-        .wallpaper {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
-                url(https://files.catbox.moe/ztoa4s.gif);
-            background-size: cover;
-            background-position: center;
-            min-height: 100vh;
-        }
-
-        pre {
-            color: #fff;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            border: none;
-            font-size: 10px;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .center-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding-bottom: 50px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         .pin-overlay {
@@ -54,9 +40,8 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.95);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10000;
@@ -65,42 +50,88 @@
         .pin-container {
             width: 400px;
             max-width: 90%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             border: 2px solid #2c2c2c;
-            border-radius: 5px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 24px;
             text-align: center;
         }
 
-        .pin-container input {
+        .formContainer {
             width: 100%;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #2c2c2c;
-            border-radius: 3px;
-            color: white;
-            font-family: "VCR OSD Mono", sans-serif;
-            font-size: 12px;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column-reverse;
+            gap: 10px;
+            position: relative;
+        }
+
+        .formContainer > label {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 900;
+            font-size: 15px;
+            color: rgb(99, 99, 99);
+            text-align: start;
+            align-self: flex-start;
             transition: all 0.3s ease;
         }
 
-        .pin-container input:focus {
-            outline: none;
-            border-color: #666666;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            animation: inputGlow 1s ease-in-out;
+        .formContainer > input,
+        .formContainer > textarea {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            background-color: transparent;
+            color: rgb(99, 99, 99);
+            border: 2px solid rgb(85, 85, 85);
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 700;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+            z-index: 5;
         }
 
-        @keyframes inputGlow {
-            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
-            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
-            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        .formContainer > textarea {
+            height: 100px;
+            resize: vertical;
+            padding: 10px;
+        }
+
+        .formContainer > input:focus,
+        .formContainer > textarea:focus {
+            color: rgb(197, 197, 197);
+            outline: none;
+            border: 2px solid rgb(255, 255, 255);
+            box-shadow:
+                0px 0px 10px rgba(255, 255, 255, 0.145),
+                0px 0px 5px rgba(255, 255, 255, 0.145) inset;
+            animation: neon-glow 1s ease-in-out infinite;
+        }
+
+        .formContainer > input:focus + label,
+        .formContainer > textarea:focus + label {
+            color: rgb(197, 197, 197);
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.145);
+        }
+
+        .formContainer > input::placeholder,
+        .formContainer > textarea::placeholder {
+            color: rgb(85, 85, 85);
+            transition: all 0.5s ease;
+        }
+
+        .formContainer > input:focus::placeholder,
+        .formContainer > textarea:focus::placeholder {
+            color: rgb(150, 150, 150);
         }
 
         .pin-error {
-            color: #ff0000;
+            color: #ff3333;
             font-size: 12px;
-            margin-top: 10px;
+            margin-top: 12px;
             animation: shake 0.5s ease-in-out;
         }
 
@@ -110,252 +141,245 @@
             75% { transform: translateX(5px); }
         }
 
-        .form-container {
-            width: 500px;
-            max-width: 90%;
-            background: transparent;
-            border: 2px solid #2c2c2c;
-            border-radius: 5px;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 12px;
-            color: #dddddd;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #2c2c2c;
-            border-radius: 3px;
-            color: white;
-            font-family: "VCR OSD Mono", sans-serif;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #666666;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            animation: inputGlow 1s ease-in-out;
-        }
-
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        .error {
-            animation: shake 0.5s ease-in-out;
-            border-color: #ff0000;
-        }
-
-        .boton-elegante {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 20px;
-            border: 2px solid #2c2c2c;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            font-size: 1.0rem;
+        .button {
             cursor: pointer;
-            border-radius: 30px;
-            transition: all 0.4s ease;
-            outline: none;
+            font-size: 1.4rem;
+            border-radius: 16px;
+            border: none;
+            padding: 2px;
+            background: radial-gradient(circle 80px at 80% -10%, #ffffff, #181b1b);
             position: relative;
-            overflow: hidden;
-            font-weight: bold;
-            opacity: 50%;
-            margin: 10px;
+            margin: 8px;
+            display: inline-flex;
+            align-items: center;
         }
 
-        .boton-elegante::after {
+        .button::after {
             content: "";
             position: absolute;
+            width: 65%;
+            height: 60%;
+            border-radius: 120px;
             top: 0;
-            opacity: 50%;
-            left: 0;
-            width: 150%;
+            right: 0;
+            box-shadow: 0 0 20px #ffffff38;
+            z-index: -1;
+        }
+
+        .blob1 {
+            position: absolute;
+            width: 70px;
             height: 100%;
+            border-radius: 16px;
+            bottom: 0;
+            left: 0;
             background: radial-gradient(
-                circle,
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0) 70%
+                circle 60px at 0% 100%,
+                #3fe9ff,
+                #0000ff80,
+                transparent
             );
-            transform: scale(0);
-            transition: transform 0.5s ease;
+            box-shadow: -10px 10px 30px #0051ff2d;
         }
 
-        .boton-elegante:hover::after {
-            transform: scale(4);
+        .inner {
+            padding: 14px 25px;
+            border-radius: 14px;
+            color: #fff;
+            z-index: 3;
+            position: relative;
+            background: radial-gradient(circle 80px at 80% -50%, #777777, #0f1111);
         }
 
-        .boton-elegante:hover {
-            border-color: #666666;
-            background: #292929;
-            opacity: 100%;
+        .inner::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 14px;
+            background: radial-gradient(
+                circle 60px at 0% 100%,
+                #00e1ff1a,
+                #0000ff11,
+                transparent
+            );
+            position: absolute;
         }
 
-        .boton-elegante:disabled {
-            opacity: 30%;
+        .button:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            max-width: 300px;
+        .button:disabled .blob1 {
+            background: radial-gradient(
+                circle 60px at 0% 100%,
+                #555555,
+                #33333380,
+                transparent
+            );
         }
 
-        .notification {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #2c2c2c;
-            border-radius: 3px;
-            padding: 12px;
-            margin-bottom: 10px;
-            font-size: 12px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-            font-family: "VCR OSD Mono", sans-serif;
+        .text-sm {
+            font-size: 0.875rem;
+            color: #ffffff99;
         }
 
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
+        pre {
+            font-size: 10px;
+            margin: 16px 0;
+            white-space: pre-wrap;
         }
 
-        .notification.success {
-            border-color: #00ff00;
-            color: #00ff00;
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3fe9ff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
         }
 
-        .notification.error {
-            border-color: #ff0000;
-            color: #ff0000;
-            animation: shake 0.5s ease-in-out;
+        .button.loading .spinner {
+            display: inline-block;
         }
 
-        .notification h4 {
-            margin: 0 0 5px 0;
-            font-size: 14px;
+        .button.loading .inner span {
+            display: none;
         }
 
-        .text {
-            margin-top: 30px;
-            text-decoration: none;
-            color: #dddddd;
-            text-align: center;
-            font-size: 12px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 600px) {
-            html, body {
-                overflow-x: hidden;
-            }
-
-            .form-container,
-            .pin-container {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .notification-container {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-
+        @media (max-width: 640px) {
             pre {
                 font-size: 8px;
             }
-
-            .text {
-                font-size: 10px;
-                padding: 0 20px;
+            .pin-container, .form-container {
+                padding: 16px;
+                width: 90%;
+            }
+            .formContainer {
+                max-width: 100%;
             }
         }
     </style>
 </head>
-<body class="wallpaper">
+<body>
+    <div class="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#0d0d0d_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="absolute top-0 z-[-2] h-screen w-full bg-[radial-gradient(ellipse_60%_60%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
+
     <div class="pin-overlay" id="pinOverlay">
         <div class="pin-container">
-            <h2>Enter PIN</h2>
-            <input type="password" id="pinInput" placeholder="Enter PIN from pin.txt">
-            <button class="boton-elegante" id="pinSubmit">Submit</button>
+            <h2 class="text-lg font-bold mb-4">Enter PIN</h2>
+            <div class="formContainer">
+                <input type="password" id="pinInput" placeholder="Enter PIN from pin.txt">
+                <label for="pinInput">PIN</label>
+            </div>
+            <button class="button" id="pinSubmit">
+                <div class="blob1"></div>
+                <div class="inner">
+                    <span>Submit</span>
+                    <div class="spinner"></div>
+                </div>
+            </button>
             <div id="pinError" class="pin-error" style="display: none;"></div>
         </div>
     </div>
 
-    <div class="center-screen" id="dashboard" style="display: none;">
-        <pre>
-                  _  __    _                 _             
-                 | |/ _|  | |               (_)            
-         ___  ___| | |_ __| | _____  ____  ___ _ __   __ _ 
-        / __|/ _ \ |  _/ _` |/ _ \ \/ /\ \/ / | '_ \ / _` |
---      \__ \  __/ | || (_| | (_) >  <  >  <| | | | | (_| |      --
-        |___/\___|_|_| \__,_|\___/_/\_\/_/\_\_|_| |_|\__, |
-                                                      __/ |
-                                                     |___/ 
-        </pre>
-        <div class="form-container">
-            <h2>Webhook Multitool</h2>
+    <div class="flex h-screen items-center justify-center" id="dashboard" style="display: none;">
+        <div class="w-full max-w-2xl text-center form-container">
+            <h1 class="text-sm font-bold mb-4">
+                <pre class="shine-text">
+$$$$$$$\                      $$\       $$\                                    $$\     
+$$  __$$\                     $$ |      \__|                                   $$ |    
+$$ |  $$ | $$$$$$\  $$\   $$\ $$$$$$$\  $$\ $$$$$$$\      $$$$$$$\   $$$$$$\ $$$$$$\   
+$$ |  $$ |$$  __$$\ \$$\ $$  |$$  __$$\ $$ |$$  __$$\     $$  __$$\ $$  __$$\\_$$  _|  
+$$ |  $$ |$$ /  $$ | \$$$$  / $$ |  $$ |$$ |$$ |  $$ |    $$ |  $$ |$$$$$$$$ | $$ |    
+$$ |  $$ |$$ |  $$ | $$  $$<  $$ |  $$ |$$ |$$ |  $$ |    $$ |  $$ |$$   ____| $$ |$$\ 
+$$$$$$$  |\$$$$$$  |$$  /\$$\ $$$$$$$  |$$ |$$ |  $$ |$$\ $$ |  $$ |\$$$$$$$\  \$$$$  |
+\_______/  \______/ \__/  \__|\_______/ \__|\__|  \__|\__|\__|  \__| \_______|  \____/ 
+                </pre>
+            </h1>
+            <h2 class="text-lg font-bold mb-4">Webhook Multitool</h2>
             <form id="webhookForm">
-                <div class="form-group">
-                    <label for="webhookUrl">Webhook URL</label>
+                <div class="formContainer">
                     <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                    <label for="webhookUrl">Webhook URL</label>
                 </div>
-                <div class="form-group">
-                    <label for="message">Message/Command</label>
+                <div class="formContainer">
                     <textarea id="message" placeholder="Enter message or bot command" required></textarea>
+                    <label for="message">Message/Command</label>
                 </div>
-                <div class="form-group">
-                    <label for="repeatCount">Repeat Count (Spammer)</label>
+                <div class="formContainer">
                     <input type="number" id="repeatCount" min="1" max="10" value="1">
+                    <label for="repeatCount">Repeat Count (max 10)</label>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="boton-elegante" id="spamBtn">Spam Webhook</button>
-                    <button type="button" class="boton-elegante" id="deleteBtn">Delete Webhook</button>
-                    <button type="button" class="boton-elegante" id="testBtn">Test Webhook</button>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="button" id="spamBtn">
+                        <div class="blob1"></div>
+                        <div class="inner">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 4H14M2 4L5 7M2 4L5 1M10 7H14M10 7L13 4M10 7L13 10M2 12H14M2 12L5 9M2 12L5 15" stroke="#ffffff"></path>
+                            </svg>
+                            <span>Spam Webhook</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                    <button type="button" class="button" id="deleteBtn">
+                        <div class="blob1"></div>
+                        <div class="inner">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 4H14M4 4V14C4 14.5523 4.44772 15 5 15H11C11.5523 15 12 14.5523 12 14V4M6 4V2C6 1.44772 6.44772 1 7 1H9C9.55228 1 10 1.44772 10 2V4M6 7V12M10 7V12" stroke="#ffffff"></path>
+                            </svg>
+                            <span>Delete Webhook</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                    <button type="button" class="button" id="testBtn">
+                        <div class="blob1"></div>
+                        <div class="inner">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8M8 3V8L11 10" stroke="#ffffff"></path>
+                            </svg>
+                            <span>Test Webhook</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
                 </div>
             </form>
-            <div class="text">
+            <p class="text-sm mt-6">
                 <strong>Warning:</strong> This is a client-side tool. Webhook URLs are processed in the browser and may be exposed. Use temporary webhooks and deploy securely. Ensure pin.txt is in the public directory.
-            </div>
+            </p>
         </div>
     </div>
 
-    <div class="notification-container" id="notificationContainer"></div>
-
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         // Notification System
         function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `<h4>${type.toUpperCase()}</h4><p>${message}</p>`;
-            document.getElementById('notificationContainer').appendChild(notification);
-            setTimeout(() => notification.classList.add('show'), 10);
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
+            Toastify({
+                text: `${type.toUpperCase()}: ${message}`,
+                duration: 4000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: type === 'success' ? '#00cc00' : type === 'error' ? '#ff3333' : '#2c2c2c',
+                className: 'toastify-notification',
+                style: {
+                    border: `1px solid ${type === 'success' ? '#00cc00' : type === 'error' ? '#ff3333' : '#2c2c2c'}`,
+                    borderRadius: '4px',
+                    padding: '12px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+                    fontSize: '12px',
+                    boxShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
+                    color: '#ffffff'
+                }
+            }).showToast();
         }
 
         // PIN Authentication
@@ -365,7 +389,7 @@
         const pinError = document.getElementById('pinError');
         const dashboard = document.getElementById('dashboard');
 
-        pinSubmit.addEventListener('click', async () => {
+        async function tryFetchPin(attempt = 1, maxAttempts = 2) {
             try {
                 const response = await fetch('/pin.txt');
                 if (!response.ok) {
@@ -378,9 +402,23 @@
                 const correctPin = await response.text();
                 const trimmedPin = typeof correctPin === 'string' ? correctPin.trim() : '';
                 console.log('Fetched PIN:', trimmedPin); // Debug log
-                if (pinInput.value.trim() === trimmedPin) {
+                return trimmedPin;
+            } catch (error) {
+                if (attempt < maxAttempts) {
+                    console.warn(`PIN fetch attempt ${attempt} failed, retrying...`);
+                    return tryFetchPin(attempt + 1, maxAttempts);
+                }
+                throw error;
+            }
+        }
+
+        pinSubmit.addEventListener('click', async () => {
+            pinSubmit.classList.add('loading');
+            try {
+                const correctPin = await tryFetchPin();
+                if (pinInput.value.trim() === correctPin) {
                     pinOverlay.style.display = 'none';
-                    dashboard.style.display = 'block';
+                    dashboard.style.display = 'flex';
                 } else {
                     pinError.textContent = 'Invalid PIN. Try again.';
                     pinError.style.display = 'block';
@@ -389,8 +427,10 @@
                 }
             } catch (error) {
                 console.error('PIN fetch error:', error);
-                pinError.textContent = `Error: ${error.message}. Check pin.txt deployment.`;
+                pinError.textContent = `Error: ${error.message}. Check pin.txt in /public.`;
                 pinError.style.display = 'block';
+            } finally {
+                pinSubmit.classList.remove('loading');
             }
         });
 
@@ -420,10 +460,10 @@
                 showNotification('Webhook URL and message are required.', 'error');
                 return;
             }
-            spamBtn.disabled = true;
+            spamBtn.classList.add('loading');
             showNotification('Spamming webhook...', 'info');
-            const url = btoa(webhookUrl.value); // Obfuscate webhook URL
-            const count = parseInt(repeatCount.value);
+            const url = btoa(webhookUrl.value);
+            const count = Math.min(parseInt(repeatCount.value), 10);
             try {
                 for (let i = 0; i < count; i++) {
                     const response = await fetch(atob(url), {
@@ -431,15 +471,15 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ content: message.value })
                     });
-                    if (!response.ok) throw new Error('Failed to send message');
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Rate limit
+                    if (!response.ok) throw new Error(`Failed to send message: ${response.status}`);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                 }
                 showNotification(`Sent ${count} message(s) successfully.`, 'success');
             } catch (error) {
-                showNotification('Failed to spam webhook. Check URL.', 'error');
+                showNotification(`Failed to spam webhook: ${error.message}.`, 'error');
                 console.error(error);
             } finally {
-                spamBtn.disabled = false;
+                spamBtn.classList.remove('loading');
             }
         });
 
@@ -450,7 +490,7 @@
                 showNotification('Webhook URL is required.', 'error');
                 return;
             }
-            deleteBtn.disabled = true;
+            deleteBtn.classList.add('loading');
             showNotification('Deleting webhook...', 'info');
             const url = btoa(webhookUrl.value);
             try {
@@ -459,13 +499,13 @@
                     showNotification('Webhook deleted successfully.', 'success');
                     webhookForm.reset();
                 } else {
-                    throw new Error('Failed to delete webhook');
+                    throw new Error(`Failed to delete webhook: ${response.status}`);
                 }
             } catch (error) {
-                showNotification('Failed to delete webhook. Check URL.', 'error');
+                showNotification(`Failed to delete webhook: ${error.message}.`, 'error');
                 console.error(error);
             } finally {
-                deleteBtn.disabled = false;
+                deleteBtn.classList.remove('loading');
             }
         });
 
@@ -476,7 +516,7 @@
                 showNotification('Webhook URL is required.', 'error');
                 return;
             }
-            testBtn.disabled = true;
+            testBtn.classList.add('loading');
             showNotification('Testing webhook...', 'info');
             const url = btoa(webhookUrl.value);
             try {
@@ -488,13 +528,13 @@
                 if (response.ok) {
                     showNotification('Webhook test successful.', 'success');
                 } else {
-                    throw new Error('Webhook test failed');
+                    throw new Error(`Webhook test failed: ${response.status}`);
                 }
             } catch (error) {
-                showNotification('Webhook test failed. Check URL.', 'error');
+                showNotification(`Webhook test failed: ${error.message}.`, 'error');
                 console.error(error);
             } finally {
-                testBtn.disabled = false;
+                testBtn.classList.remove('loading');
             }
         });
     </script>
