@@ -1,251 +1,494 @@
-<!doctype html>
-<html lang="pl">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Webhook Deleter — local</title>
-<style>
-  :root{--bg:#0b0b0d;--card:#111214;--accent:#8a4fe6;--danger:#d9534f;--muted:#999}
-  body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#050507, #0b0b0d); color:#eee; margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px}
-  .card{width:100%; max-width:820px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-  h1{margin:0 0 8px 0; font-size:20px}
-  p.lead{margin:0 0 16px 0; color:var(--muted); font-size:13px}
-  label{display:block; font-size:13px; margin:12px 0 6px}
-  input[type=text], input[type=password], textarea{width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#060607; color:#fff; box-sizing:border-box}
-  .row{display:flex; gap:8px; margin-top:12px}
-  button{background:var(--accent); color:white; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600}
-  button.ghost{background:transparent; border:1px solid rgba(255,255,255,0.06)}
-  button.danger{background:var(--danger)}
-  .muted{color:var(--muted); font-size:13px}
-  .log{background:#060607; border:1px dashed rgba(255,255,255,0.03); padding:10px; margin-top:12px; border-radius:8px; font-size:13px; max-height:220px; overflow:auto}
-  .notice{background:#111214; padding:8px 10px; border-radius:8px; font-size:13px; color:var(--muted); margin-top:8px}
-  small.warn{color: #f4b8b6}
-</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Multitool</title>
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <style>
+        * {
+            font-family: "VCR OSD Mono", sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .wallpaper {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url(https://files.catbox.moe/ztoa4s.gif);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        pre {
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            border: none;
+            font-size: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .center-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .pin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .pin-container {
+            width: 400px;
+            max-width: 90%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #2c2c2c;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .pin-container input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #2c2c2c;
+            border-radius: 3px;
+            color: white;
+            font-family: "VCR OSD Mono", sans-serif;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .pin-container input:focus {
+            outline: none;
+            border-color: #666666;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: inputGlow 1s ease-in-out;
+        }
+
+        @keyframes inputGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        }
+
+        .pin-error {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 10px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .form-container {
+            width: 500px;
+            max-width: 90%;
+            background: transparent;
+            border: 2px solid #2c2c2c;
+            border-radius: 5px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #dddddd;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #2c2c2c;
+            border-radius: 3px;
+            color: white;
+            font-family: "VCR OSD Mono", sans-serif;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #666666;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: inputGlow 1s ease-in-out;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .error {
+            animation: shake 0.5s ease-in-out;
+            border-color: #ff0000;
+        }
+
+        .boton-elegante {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 20px;
+            border: 2px solid #2c2c2c;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 1.0rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            opacity: 50%;
+            margin: 10px;
+        }
+
+        .boton-elegante::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            opacity: 50%;
+            left: 0;
+            width: 150%;
+            height: 100%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .boton-elegante:hover::after {
+            transform: scale(4);
+        }
+
+        .boton-elegante:hover {
+            border-color: #666666;
+            background: #292929;
+            opacity: 100%;
+        }
+
+        .boton-elegante:disabled {
+            opacity: 30%;
+            cursor: not-allowed;
+        }
+
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 300px;
+        }
+
+        .notification {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #2c2c2c;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            font-family: "VCR OSD Mono", sans-serif;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+
+        .notification.error {
+            border-color: #ff0000;
+            color: #ff0000;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .notification h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .text {
+            margin-top: 30px;
+            text-decoration: none;
+            color: #dddddd;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            html, body {
+                overflow-x: hidden;
+            }
+
+            .form-container,
+            .pin-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .notification-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            pre {
+                font-size: 8px;
+            }
+
+            .text {
+                font-size: 10px;
+                padding: 0 20px;
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="card" role="main">
-    <h1>Webhook Deleter — lokalny (frontend-only)</h1>
-    <p class="lead">Tool usuwa webhook, do którego masz dostęp. Zabezpieczenia: PIN, potwierdzenia i rate-limit po stronie przeglądarki. Jeśli serwis blokuje żądania z przeglądarki (CORS), użyj wyświetlonej komendy <code>curl</code> lokalnie.</p>
-
-    <div class="notice">
-      <strong>Uwaga:</strong> ten plik działa wyłącznie lokalnie w Twojej przeglądarce. Nie udostępniaj webhooków ani PINu nikomu. Nie używaj do usuwania cudzych zasobów.
+<body class="wallpaper">
+    <div class="pin-overlay" id="pinOverlay">
+        <div class="pin-container">
+            <h2>Enter PIN</h2>
+            <input type="password" id="pinInput" placeholder="Enter PIN from pin.txt">
+            <button class="boton-elegante" id="pinSubmit">Submit</button>
+            <div id="pinError" class="pin-error" style="display: none;"></div>
+        </div>
     </div>
 
-    <!-- PIN -->
-    <label for="pin">PIN (wpisz PIN lub ustaw / zmień PIN lokalnie)</label>
-    <div style="display:flex;gap:8px;">
-      <input id="pin" placeholder="Wpisz PIN" type="password" autocomplete="new-password" />
-      <button id="setPinBtn" class="ghost">Zapisz PIN lokalnie (zaszyfrowany)</button>
+    <div class="center-screen" id="dashboard" style="display: none;">
+        <pre>
+                  _  __    _                 _             
+                 | |/ _|  | |               (_)            
+         ___  ___| | |_ __| | _____  ____  ___ _ __   __ _ 
+        / __|/ _ \ |  _/ _` |/ _ \ \/ /\ \/ / | '_ \ / _` |
+--      \__ \  __/ | || (_| | (_) >  <  >  <| | | | | (_| |      --
+        |___/\___|_|_| \__,_|\___/_/\_\/_/\_\_|_| |_|\__, |
+                                                      __/ |
+                                                     |___/ 
+        </pre>
+        <div class="form-container">
+            <h2>Webhook Multitool</h2>
+            <form id="webhookForm">
+                <div class="form-group">
+                    <label for="webhookUrl">Webhook URL</label>
+                    <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message/Command</label>
+                    <textarea id="message" placeholder="Enter message or bot command" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="repeatCount">Repeat Count (Spammer)</label>
+                    <input type="number" id="repeatCount" min="1" max="10" value="1">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="boton-elegante" id="spamBtn">Spam Webhook</button>
+                    <button type="button" class="boton-elegante" id="deleteBtn">Delete Webhook</button>
+                    <button type="button" class="boton-elegante" id="testBtn">Test Webhook</button>
+                </div>
+            </form>
+            <div class="text">
+                <strong>Warning:</strong> This is a client-side tool. Webhook URLs are processed in the browser and may be exposed. Use temporary webhooks and deploy securely. Ensure pin.txt is in the public directory.
+            </div>
+        </div>
     </div>
-    <div class="muted" style="margin-top:6px">Możesz też zamienić wartość `PIN_HASH` w skrypcie na SHA-256 Twojego PIN, by mieć stały PIN w pliku.</div>
 
-    <!-- Webhook URL -->
-    <label for="webhook">Webhook URL (pełny, np. Discord webhook URL)</label>
-    <input id="webhook" type="text" placeholder="Wklej pełny URL webhooka" />
+    <div class="notification-container" id="notificationContainer"></div>
 
-    <label for="confirmText">Potwierdzenie akcji (wpisz <code>DELETE</code> aby potwierdzić)</label>
-    <input id="confirmText" type="text" placeholder="Wpisz DELETE aby potwierdzić" />
+    <script>
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<h4>${type.toUpperCase()}</h4><p>${message}</p>`;
+            document.getElementById('notificationContainer').appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
 
-    <div class="row">
-      <button id="testBtn">Wyślij testowe GET (sprawdź dostępność)</button>
-      <button id="deleteBtn" class="danger">Usuń webhook (DELETE)</button>
-      <button id="clearBtn" class="ghost">Wyczyść log</button>
-    </div>
+        // PIN Authentication
+        const pinOverlay = document.getElementById('pinOverlay');
+        const pinInput = document.getElementById('pinInput');
+        const pinSubmit = document.getElementById('pinSubmit');
+        const pinError = document.getElementById('pinError');
+        const dashboard = document.getElementById('dashboard');
 
-    <div style="display:flex; gap:8px; margin-top:12px; align-items:center;">
-      <div class="muted">Rate-limit lokalny:</div>
-      <div id="rateInfo" class="muted">0 akcji w ciągu 1 min</div>
-    </div>
+        pinSubmit.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/pin.txt');
+                if (!response.ok) throw new Error('Failed to load pin.txt');
+                const correctPin = await response.text().trim();
+                if (pinInput.value.trim() === correctPin) {
+                    pinOverlay.style.display = 'none';
+                    dashboard.style.display = 'block';
+                } else {
+                    pinError.textContent = 'Invalid PIN. Try again.';
+                    pinError.style.display = 'block';
+                    pinInput.classList.add('error');
+                    setTimeout(() => pinInput.classList.remove('error'), 500);
+                }
+            } catch (error) {
+                pinError.textContent = 'Error loading PIN file. Check deployment.';
+                pinError.style.display = 'block';
+                console.error(error);
+            }
+        });
 
-    <div class="log" id="log" aria-live="polite"></div>
-    <div style="margin-top:12px; font-size:13px;"><strong>Jeśli wystąpi błąd CORS:</strong> narzędzie pokaże komendę <code>curl</code> którą możesz uruchomić lokalnie w terminalu by wykonać DELETE bez ograniczeń przeglądarki.</div>
-    <div style="margin-top:12px"><small class="warn">Nie tworzę i nie wspieram nadużyć — korzystasz na własną odpowiedzialność.</small></div>
-  </div>
+        // Webhook Multitool Logic
+        const webhookForm = document.getElementById('webhookForm');
+        const webhookUrl = document.getElementById('webhookUrl');
+        const message = document.getElementById('message');
+        const repeatCount = document.getElementById('repeatCount');
+        const spamBtn = document.getElementById('spamBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const testBtn = document.getElementById('testBtn');
 
-<script>
-/*
-  Webhook Deleter — frontend-only
-  - Możesz zapisać PIN lokalnie (hash jest wyliczany i zapisywany).
-  - Alternatywnie: jeśli chcesz stały PIN w pliku, zastąp poniższy PIN_HASH wartością SHA-256 (heks) twojego PIN (komentarz w kodzie).
-  - Uwaga: wiele endpointów blokuje CORS; wtedy zostanie wygenerowana komenda curl, którą uruchomisz lokalnie.
-*/
+        function validateInputs() {
+            let isValid = true;
+            [webhookUrl, message].forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('error');
+                    isValid = false;
+                    setTimeout(() => input.classList.remove('error'), 500);
+                }
+            });
+            return isValid;
+        }
 
-/* ----- KONFIGURACJA: 
-   Jeśli chcesz, możesz wstawić tu SHA-256 (hex) swojego PINu, np: 
-   const PIN_HASH = "e3b0c44298fc1c149afbf4c8996fb924..."; 
-   Wtedy użytkownik musi wpisać PIN zgodny z tym hashem.
-   Jeśli pozostawisz null, używany będzie PIN zapisany w localStorage (jeśli ustawiony).
-*/
-const PIN_HASH = null; // <-- opcjonalnie zamień na hash SHA-256 (hex) dla stałego PINu w pliku
+        spamBtn.addEventListener('click', async () => {
+            if (!validateInputs()) {
+                showNotification('Webhook URL and message are required.', 'error');
+                return;
+            }
+            spamBtn.disabled = true;
+            showNotification('Spamming webhook...', 'info');
+            const url = btoa(webhookUrl.value); // Obfuscate webhook URL
+            const count = parseInt(repeatCount.value);
+            try {
+                for (let i = 0; i < count; i++) {
+                    const response = await fetch(atob(url), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ content: message.value })
+                    });
+                    if (!response.ok) throw new Error('Failed to send message');
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Rate limit
+                }
+                showNotification(`Sent ${count} message(s) successfully.`, 'success');
+            } catch (error) {
+                showNotification('Failed to spam webhook. Check URL.', 'error');
+                console.error(error);
+            } finally {
+                spamBtn.disabled = false;
+            }
+        });
 
-// Ogólne elementy
-const logEl = document.getElementById('log');
-const webhookInput = document.getElementById('webhook');
-const pinInput = document.getElementById('pin');
-const confirmInput = document.getElementById('confirmText');
-const setPinBtn = document.getElementById('setPinBtn');
-const testBtn = document.getElementById('testBtn');
-const deleteBtn = document.getElementById('deleteBtn');
-const clearBtn = document.getElementById('clearBtn');
-const rateInfo = document.getElementById('rateInfo');
+        deleteBtn.addEventListener('click', async () => {
+            if (!webhookUrl.value.trim()) {
+                webhookUrl.classList.add('error');
+                setTimeout(() => webhookUrl.classList.remove('error'), 500);
+                showNotification('Webhook URL is required.', 'error');
+                return;
+            }
+            deleteBtn.disabled = true;
+            showNotification('Deleting webhook...', 'info');
+            const url = btoa(webhookUrl.value);
+            try {
+                const response = await fetch(atob(url), { method: 'DELETE' });
+                if (response.ok) {
+                    showNotification('Webhook deleted successfully.', 'success');
+                    webhookForm.reset();
+                } else {
+                    throw new Error('Failed to delete webhook');
+                }
+            } catch (error) {
+                showNotification('Failed to delete webhook. Check URL.', 'error');
+                console.error(error);
+            } finally {
+                deleteBtn.disabled = false;
+            }
+        });
 
-// Lokalny rate-limit (simple): maks akcje na minutę
-const RATE_WINDOW_MS = 60_000;
-const MAX_ACTIONS_PER_WINDOW = 4;
-let actionTimestamps = [];
-
-// Helper: log
-function log(msg, level='info'){
-  const el = document.createElement('div');
-  el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-  if(level==='err') el.style.color = '#f77979';
-  logEl.prepend(el);
-}
-
-// Helper: SHA-256, zwraca hex string
-async function sha256Hex(str){
-  const enc = new TextEncoder();
-  const data = enc.encode(str);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-// Pobierz aktualny hash PIN, preferuj stały PIN_HASH, w przeciwnym razie z localStorage
-async function getStoredPinHash(){
-  if(PIN_HASH) return PIN_HASH;
-  return localStorage.getItem('webdel_pin_hash') || null;
-}
-
-// Ustaw PIN lokalnie (zapisz hash)
-setPinBtn.addEventListener('click', async () => {
-  const p = pinInput.value;
-  if(!p){ alert('Wpisz PIN przed zapisaniem.'); return; }
-  const h = await sha256Hex(p);
-  localStorage.setItem('webdel_pin_hash', h);
-  pinInput.value = '';
-  log('PIN zapisany lokalnie (hash).');
-});
-
-// Prosty rate-limit check
-function allowedAction(){
-  const now = Date.now();
-  // usuń stare
-  actionTimestamps = actionTimestamps.filter(t => (now - t) <= RATE_WINDOW_MS);
-  rateInfo.textContent = `${actionTimestamps.length} akcji w ciągu ${Math.round(RATE_WINDOW_MS/1000)} s (limit ${MAX_ACTIONS_PER_WINDOW})`;
-  if(actionTimestamps.length >= MAX_ACTIONS_PER_WINDOW) return false;
-  actionTimestamps.push(now);
-  rateInfo.textContent = `${actionTimestamps.length} akcji w ciągu ${Math.round(RATE_WINDOW_MS/1000)} s (limit ${MAX_ACTIONS_PER_WINDOW})`;
-  return true;
-}
-
-// Walidacja URL
-function isValidUrl(u){
-  try{
-    const url = new URL(u);
-    return ['http:', 'https:'].includes(url.protocol);
-  }catch(e){
-    return false;
-  }
-}
-
-// Funkcja wykonująca fetch DELETE (z obsługą CORS)
-async function attemptDelete(url){
-  log('Próba wysłania żądania DELETE do: ' + url);
-  try{
-    const res = await fetch(url, { method: 'DELETE', mode: 'cors' });
-    // Jeżeli serwis nie zezwala na CORS, fetch zwykle odrzuci promise lub zwróci opałny status
-    if(res.ok){
-      log('Usunięto webhook (odpowiedź OK).');
-      return { ok: true, status: res.status, detail: 'Deleted (HTTP OK)' };
-    } else {
-      const txt = await res.text().catch(()=>'<no-body>');
-      log(`Serwer zwrócił status ${res.status}. Treść: ${txt}`, 'err');
-      return { ok: false, status: res.status, detail: txt };
-    }
-  }catch(err){
-    log('Błąd podczas requestu: ' + (err && err.message ? err.message : String(err)), 'err');
-    return { ok: false, error: err };
-  }
-}
-
-// Generuj bezpieczną instrukcję curl, aby użytkownik mógł wykonać żądanie lokalnie (obejście CORS)
-function curlCommandFor(url){
-  // Używamy prostego DELETE. Jeśli endpoint wymaga nagłówków, daj użytkownikowi wskazówkę.
-  return `curl -X DELETE "${url.replace(/"/g,'\\"')}"`;
-}
-
-// Test availability — GET (niektóre webhooky nie odpowiedzą na GET, ale próbujemy)
-testBtn.addEventListener('click', async () => {
-  if(!allowedAction()){ alert('Lokalny rate-limit osiągnięty — spróbuj później.'); return; }
-  const url = webhookInput.value.trim();
-  if(!isValidUrl(url)){ alert('Podaj poprawny URL.'); return; }
-  log('Wysyłam testowe żądanie GET (sprawdzenie dostępności)...');
-  try{
-    const res = await fetch(url, { method: 'GET', mode: 'cors' });
-    log(`GET: status ${res.status}.`);
-  }catch(err){
-    log('GET nie powiódł się (możliwe CORS lub brak odpowiedzi).', 'err');
-    const curl = curlCommandFor(url);
-    log('Uruchom w terminalu, jeśli chcesz przetestować poza przeglądarką: ' + curl);
-  }
-});
-
-// DELETE button
-deleteBtn.addEventListener('click', async () => {
-  if(!allowedAction()){ alert('Lokalny rate-limit osiągnięty — spróbuj później.'); return; }
-
-  const url = webhookInput.value.trim();
-  const confirmText = confirmInput.value.trim();
-  const pin = pinInput.value;
-
-  if(!isValidUrl(url)){ alert('Podaj poprawny URL webhooka.'); return; }
-  if(confirmText !== 'DELETE'){ alert('Aby potwierdzić, wpisz dokładnie DELETE w polu potwierdzenia.'); return; }
-
-  const storedHash = await getStoredPinHash();
-  if(!storedHash){ alert('Brak ustawionego PINu — najpierw zapisz PIN lokalnie (przycisk "Zapisz PIN lokalnie") albo ustaw PIN_HASH w pliku.'); return; }
-  if(!pin){ alert('Wpisz PIN (pole PIN).'); return; }
-
-  const pinHash = await sha256Hex(pin);
-  if(pinHash !== storedHash){
-    alert('Nieprawidłowy PIN.');
-    log('Nieudana próba: nieprawidłowy PIN.', 'err');
-    return;
-  }
-
-  // Ostateczne potwierdzenie modal-like
-  if(!confirm('Potwierdzasz usunięcie webhooka? Akcja jest nieodwracalna dla tego tokena.')) return;
-
-  // Wykonaj DELETE
-  const result = await attemptDelete(url);
-
-  if(result.ok){
-    log('Webhook prawdopodobnie usunięty pomyślnie.');
-    // oczyść pola potwierdzenia
-    confirmInput.value = '';
-    webhookInput.value = '';
-    pinInput.value = '';
-  } else {
-    log('Usuwanie nie powiodło się; być może CORS lub serwis odrzucił request. Zobacz niżej instrukcję curl.', 'err');
-    const curl = curlCommandFor(url);
-    log('Jeśli to CORS — uruchom lokalnie w terminalu: ' + curl);
-    // pokaż dodatkową wiadomość użytkownikowi
-    alert('Usunięcie w przeglądarce nie powiodło się (możliwy problem CORS). Sprawdź log i użyj podanego curl, jeśli to konieczne.');
-  }
-});
-
-// Clear log
-clearBtn.addEventListener('click', ()=> logEl.innerHTML = '');
-
-// Na starcie: załaduj ewentualny lokalny hash i pokaż info
-(async function init(){
-  const stored = await getStoredPinHash();
-  if(stored){
-    log('Znaleziono zapisany PIN (hash) — narzędzie gotowe.');
-  } else {
-    log('Brak zapisanego PINu. Ustaw PIN klikając "Zapisz PIN lokalnie" lub wklej hash do zmiennej PIN_HASH w pliku HTML.');
-  }
-  rateInfo.textContent = `${actionTimestamps.length} akcji w ciągu ${Math.round(RATE_WINDOW_MS/1000)} s (limit ${MAX_ACTIONS_PER_WINDOW})`;
-})();
-</script>
+        testBtn.addEventListener('click', async () => {
+            if (!webhookUrl.value.trim()) {
+                webhookUrl.classList.add('error');
+                setTimeout(() => webhookUrl.classList.remove('error'), 500);
+                showNotification('Webhook URL is required.', 'error');
+                return;
+            }
+            testBtn.disabled = true;
+            showNotification('Testing webhook...', 'info');
+            const url = btoa(webhookUrl.value);
+            try {
+                const response = await fetch(atob(url), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: 'Test message from Webhook Multitool' })
+                });
+                if (response.ok) {
+                    showNotification('Webhook test successful.', 'success');
+                } else {
+                    throw new Error('Webhook test failed');
+                }
+            } catch (error) {
+                showNotification('Webhook test failed. Check URL.', 'error');
+                console.error(error);
+            } finally {
+                testBtn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
