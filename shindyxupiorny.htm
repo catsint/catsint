@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - selfdox</title>
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <style>
+        * {
+            font-family: "VCR OSD Mono", sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url(https://files.catbox.moe/ztoa4s.gif);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .button-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .button {
+            cursor: pointer;
+            padding: 1em;
+            font-size: 1em;
+            width: 7em;
+            aspect-ratio: 1/0.25;
+            color: white;
+            background: #212121;
+            border-radius: 0.5em;
+            outline: 0.1em solid #353535;
+            opacity: 50%;
+            border: 0;
+            box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background: radial-gradient(circle at bottom, rgba(112, 112, 112, 0.612) 10%, #212121 70%);
+            outline: 0;
+        }
+
+        .icon {
+            fill: white;
+            width: 1em;
+            aspect-ratio: 1;
+            margin: auto;
+            transform: translate(-35%, 10%);
+        }
+
+        .main-content {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 80px;
+        }
+
+        .sidebar {
+            width: 300px;
+            margin-top: 80px;
+        }
+
+        .sidebar-block {
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-block h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-block p {
+            font-size: 0.9em;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .ascii-art {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ascii-art pre {
+            font-size: 8px;
+            line-height: 1.2;
+            color: #0f0;
+            margin: 0;
+        }
+
+        .content-text {
+            font-size: 0.95em;
+            line-height: 1.8;
+            color: #ddd;
+            white-space: pre-wrap;
+        }
+
+        .content-text h2 {
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+            color: #fff;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" onclick="window.location.href='doxlist.htm'">
+            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"></path>
+            </svg>
+            Back
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="content-text">
+Czas na deanonimizację – prawda wychodzi na jaw
+Upiorny i Shindi przez długi czas uważali się za hakerów, wykorzystując internetową anonimowość do siania strachu. Straszyli dziewczyny, udostępniali cudze dane osobowe
+bez zgody i regularnie przekraczali granice dobrego zachowania w sieci. Przez długi czas czuli się bezkarni – ale to się właśnie skończyło.
+Ich własna pewność siebie doprowadziła do wpadki – wystarczyło jedno pobranie nieodpowiedniego pliku, by zostawić po sobie ślad. Każdy zostawia ślady – nawet ci, którzy myślą, że są „niewidzialni”.
+Czas, by społeczność dowiedziała się, kim naprawdę byli ci, którzy przez długi czas ukrywali się za pseudonimami i wykorzystywali swoją „anonimowość” do krzywdzenia innych.
+Sprawiedliwość w internecie może działać powoli, ale zawsze działa Pozdrawiam dollarsign.
+
+
+┌ Upiorny - Michał Skowroński
+├ Telegram: @stoplarpingkid
+├ Telegram: @lostmyledgerinpoland
+├ Facebook: https://www.facebook.com/profile.php?id=61576739368275
+├ Roblox: 8895481075
+├ Roblox: 25049325
+├ Instagram: someonstolemyledger
+├ Tiktok: someonestolemyledger
+├ Discord: larpedlifestyle
+├ Discord: chorobapsychiczna
+├ Epic Games: leantap
+├ STEAM: 76561198781047627 
+├ E-Mail: edwin.zieme@edmondventures.com
+├ E-Mail: stayanonymous@gtfcy37qyzor7kb6blz2buwuu5u7qjkycasjdf3yaslibkbyhsxub4yd.onion
+├ E-Mail: sinisterfuck@mail2tor.com
+├ E-Mail: michal.skowronski89@email.com
+├ E-Mail: michal.skowronski2010@gmail.com
+├ Discord Number: +48 503182947
+├ Discord Number: +48 796420158
+├ Steam Number: +48 887301659
+├ Facebook Number: +48 665934210
+├ Telegram Number: +1 4722599965
+├ Telegram Number: +1 5056146111
+└ Roblox Number: +355 689037303
+|
+┌ Family
+├ Father: https://www.facebook.com/tomek.skowronski.777/photos
+├ Mather: https://www.facebook.com/marta.pilarska.39
+├ GrandMother: https://www.facebook.com/profile.php?id=100090756271167
+└ GrandFather: https://www.facebook.com/miroslaw.skowronski.39/photos
+
+
+┌ Shindy - Filip Piecuch
+├ Telegram: @Shindy215
+├ Facebook: https://www.facebook.com/profile.php?id=100069165980672
+├ Instagram: Sh1ndy00
+├ Tiktok: Reaperint
+├ Discord: 9gsm
+├ Discord: Shindy
+├ E-Mail: fpiecuch07@gmail.com
+├ Girlfriend: https://www.facebook.com/profile.php?id=100072897559182
+├ Discord Number: +48 579 521 950
+├ Discord Number: +355 674900507
+├ Steam Number: +48 534 717 951
+├ Telegram Number: +1 5056806746
+|
+┌ School
+├ III Liceum Ogólnokształcące w Krośnie
+├ ul. Bohaterów Westerplatte 20
+├ 38-400 Krosno
+├  Tel.: (13) 43 216 94
+├  Strona internetowa: https://norwidkrosno.pl/
+|
+┌ Family
+├ Father: https://www.facebook.com/krzysztof.piecuch.58
+├ Mather: https://www.facebook.com/profile.php?id=100008668478109
+├ E-Mail: Krzysztofpiecuch@gmail.com
+├ E-Mail: piecucha24@gmail.com
+├ Amelia Piecuch | Krzysztof Piecuch
+├ Sister: https://www.facebook.com/sandra.piecuch.7?locale=pl_PL
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-block">
+                <h3>Title:</h3>
+                <p>Shindy & Upiorny</p>
+            </div>
+
+            <div class="sidebar-block">
+                <h3>Posted:</h3>
+                <p>Oct 14, 2025</p>
+            </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio loop="" id="bgMusic">
+        <source src="https://files.catbox.moe/wb12a3.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        document.body.addEventListener('click', () => {
+            audio.volume = 0.5;
+            audio.play();
+        }, { once: true });
+    </script>
+</body>
+</html>
